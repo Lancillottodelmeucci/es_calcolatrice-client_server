@@ -47,7 +47,7 @@ public class CLICalculator {
     public void inviaOperazioni(){
         for(;;){
             try {
-                System.out.println("Inserire l'operazione da inviare al server (oppure 'fine' per terminare):");
+                System.out.println("Inserire l'operazione da inviare al server\n('ris' per il risultato precedente oppure 'fine' per terminare):");
                 operazione=input_tastiera.readLine();
                 if(operazione.toUpperCase().equals("FINE")){
                     dati_al_server.writeBytes("eoc");

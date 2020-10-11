@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -21,6 +22,7 @@ public class ServerCalculator {
     DataOutputStream dati_al_client;
     ArrayList<Float> operandi=new ArrayList<>();
     ArrayList<Character> operatori=new ArrayList<>();
+    String lastResult="0";
     public Socket attendiConnessioneClient(){
         try {
             System.out.println("Server in esecuzione.");
@@ -47,10 +49,14 @@ public class ServerCalculator {
                     break;
                 }
                 System.out.println("Messaggio ricevuto.");
+                operazione=operazione.replaceAll("ris", lastResult);
                 if(isCorretta()){
                     risposta_server=calcola();
                     if(risposta_server.equals("Infinity")||risposta_server.equals("NaN")){
                         risposta_server="Errore matematico presente nell'operazione.";
+                    }
+                    else{
+                        lastResult=risposta_server;
                     }
                 }
                 else{
