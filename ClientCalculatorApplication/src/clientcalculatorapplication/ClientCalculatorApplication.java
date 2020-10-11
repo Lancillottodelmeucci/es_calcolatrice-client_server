@@ -16,6 +16,9 @@ public class ClientCalculatorApplication {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        CLICalculator calculator=new CLICalculator();
+        calculator.connettiAlServer();
+        calculator.inviaOperazioni();
     }
     
 }

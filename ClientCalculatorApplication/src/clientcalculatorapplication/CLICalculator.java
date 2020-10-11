@@ -25,7 +25,7 @@ public class CLICalculator {
     String risultato;
     DataOutputStream dati_al_server;
     BufferedReader dati_dal_server;
-    public Socket connetti(){
+    public Socket connettiAlServer(){
         try {
             input_tastiera=new BufferedReader(new InputStreamReader(System.in));
             socket=new Socket(nome_server,porta_server);
@@ -43,5 +43,28 @@ public class CLICalculator {
             System.exit(1);
         }
         return(socket);
+    }
+    public void inviaOperazioni(){
+        for(;;){
+            try {
+                System.out.println("Inserire l'operazione da inviare al server (oppure 'fine' per terminare):");
+                operazione=input_tastiera.readLine();
+                if(operazione.toUpperCase().equals("FINE")){
+                    dati_al_server.writeBytes("eoc");
+                    System.out.println("Chiusura dell'esecuzione.");
+                    socket.close();
+                    break;
+                }
+                System.out.println("Invio dell'operazione al server.");
+                dati_al_server.writeBytes(operazione+'\n');
+                risultato=dati_dal_server.readLine();
+                System.out.println("Risultato operazioni: "+risultato);
+            }
+            catch(IOException e){
+                System.out.println(e.getMessage());
+                System.out.println("Errore durante la comunicazione col server.");
+                System.exit(1);
+            }
+        }
     }
 }

@@ -43,7 +43,7 @@ public class ServerCalculator {
             for(;;){
                 System.out.println("In attesa del messaggio da parte del client.");
                 operazione=dati_dal_client.readLine();
-                if(operazione.toLowerCase().equals("eoc")){//end of calculus
+                if(operazione.equals("eoc")){//end of calculus
                     break;
                 }
                 System.out.println("Messaggio ricevuto.");
