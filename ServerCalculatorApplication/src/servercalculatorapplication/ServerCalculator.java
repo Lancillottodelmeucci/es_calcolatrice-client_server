@@ -66,6 +66,7 @@ public class ServerCalculator {
         }
     }
     public boolean isCorretta(){
+        //errore del ".." da correggere;
         //ArrayList<Character> charOp=new ArrayList<>(operazione.toCharArray());
         //char[] chars=operazione.toCharArray();
         for (int i = 0; i < operazione.length(); i++) {
