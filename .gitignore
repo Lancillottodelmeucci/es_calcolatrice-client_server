@@ -4,3 +4,5 @@ ClientCalculatorApplication/nbproject/
 ClientCalculatorApplication/test/
 *.xml
 *.mf
+/ClientCalculatorApplication/build/
+/ServerCalculatorApplication/build/

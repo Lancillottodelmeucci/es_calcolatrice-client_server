@@ -10,15 +10,12 @@ package clientcalculatorapplication;
  * @author giova
  */
 public class ClientCalculatorApplication {
-
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         CLICalculator calculator=new CLICalculator();
         calculator.connettiAlServer();
         calculator.inviaOperazioni();
     }
-    
 }

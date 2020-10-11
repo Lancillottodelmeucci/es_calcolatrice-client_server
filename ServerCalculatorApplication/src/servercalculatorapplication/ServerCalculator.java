@@ -49,6 +49,9 @@ public class ServerCalculator {
                 System.out.println("Messaggio ricevuto.");
                 if(isCorretta()){
                     risposta_server=calcola();
+                    if(risposta_server.equals("Infinity")||risposta_server.equals("NaN")){
+                        risposta_server="Errore matematico presente nell'operazione.";
+                    }
                 }
                 else{
                     risposta_server="Errore presente nell'operazione.";
@@ -189,7 +192,6 @@ public class ServerCalculator {
         return (true);
     }
     private String calcola(){//aggiungere cronologia calcoli?
-        //String ret="andata a bun fine";
         String appo="";
         operandi=new ArrayList<>();
         operatori=new ArrayList<>();
@@ -198,24 +200,22 @@ public class ServerCalculator {
             if(c<='9'&&c>='0'){
                 appo+=operazione.charAt(i);
             }
-            else if(c.equals('.')){///correzione doppia virgola
+            else if(c.equals('.')){//correzione doppia virgola
                 if(appo.indexOf('.')==-1){
                     appo+=operazione.charAt(i);
                 }
             }
             else{
-                /*if(i==0){
-                    operandi.add(0f);
+                if(appo.equals(".")){
+                    appo="0";
                 }
-                else if(i==operazione.length()-1){
-                    break;
-                }*/
-                //else{
-                    operandi.add(Float.valueOf(appo));
-                    appo="";
-                //}
+                operandi.add(Float.valueOf(appo));
+                appo="";
                 operatori.add(c);
             }
+        }
+        if(appo.equals(".")){
+            appo="0";
         }
         operandi.add(Float.valueOf(appo));
         System.out.println(operandi.toString()+'\n'+operatori.toString());
