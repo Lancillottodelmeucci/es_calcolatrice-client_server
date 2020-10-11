@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +19,8 @@ public class ServerCalculator {
     String risposta_server=null;
     BufferedReader dati_dal_client;
     DataOutputStream dati_al_client;
+    ArrayList<Float> operandi=new ArrayList<>();
+    ArrayList<Character> operatori=new ArrayList<>();
     public Socket attendiConnessioneClient(){
         try {
             System.out.println("Server in esecuzione.");
@@ -45,7 +48,7 @@ public class ServerCalculator {
                 }
                 System.out.println("Messaggio ricevuto.");
                 if(isCorretta()){
-                    risposta_server='#'+operazione;
+                    risposta_server=calcola();
                 }
                 else{
                     risposta_server="Errore presente nell'operazione.";
@@ -183,5 +186,64 @@ public class ServerCalculator {
             return (false);
         }
         return (true);
+    }
+    private String calcola(){//aggiungere cronologia calcoli?
+        //String ret="andata a bun fine";
+        String appo="";
+        operandi=new ArrayList<>();
+        operatori=new ArrayList<>();
+        for (int i = 0; i < operazione.length(); i++) {
+            Character c=operazione.charAt(i);
+            if(c<='9'&&c>='0'){
+                appo+=operazione.charAt(i);
+            }
+            else if(c.equals('.')){///correzione doppia virgola
+                if(appo.indexOf('.')==-1){
+                    appo+=operazione.charAt(i);
+                }
+            }
+            else{
+                /*if(i==0){
+                    operandi.add(0f);
+                }
+                else if(i==operazione.length()-1){
+                    break;
+                }*/
+                //else{
+                    operandi.add(Float.valueOf(appo));
+                    appo="";
+                //}
+                operatori.add(c);
+            }
+        }
+        operandi.add(Float.valueOf(appo));
+        System.out.println(operandi.toString()+'\n'+operatori.toString());
+        singoleOperazioni('/');
+        singoleOperazioni('*');
+        singoleOperazioni('+');
+        singoleOperazioni('-');
+        return (operandi.get(0)+"");
+    }
+    private void singoleOperazioni(Character c){
+        while(operatori.indexOf(c)!=-1){
+            Float f=0f;
+            switch(c){
+                case '/':
+                    f=operandi.get(operatori.indexOf(c))/operandi.get(operatori.indexOf(c)+1);
+                    break;
+                case '*':
+                    f=operandi.get(operatori.indexOf(c))*operandi.get(operatori.indexOf(c)+1);
+                    break;
+                case '-':
+                    f=operandi.get(operatori.indexOf(c))-operandi.get(operatori.indexOf(c)+1);
+                    break;
+                case '+':
+                    f=operandi.get(operatori.indexOf(c))+operandi.get(operatori.indexOf(c)+1);
+                    break;
+            }
+            operandi.set(operatori.indexOf(c), f);
+            operandi.remove(operatori.indexOf(c)+1);
+            operatori.remove(operatori.indexOf(c));
+        }
     }
 }
